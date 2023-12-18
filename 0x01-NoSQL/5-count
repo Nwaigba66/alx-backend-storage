@@ -1,0 +1,22 @@
+// my comment
+// Example usage: mongo scriptName.js --eval "var dbName='your_database_name'"
+// Replace 'your_database_name' with the actual name of your database
+
+// my comment
+// Example usage: mongo scriptName.js --eval "var dbName='your_database_name'"
+// Replace 'your_database_name' with the actual name of your database
+
+// Ensure dbName is provided as an option
+if (!dbName) {
+  print("Error: Database name not provided. Usage: mongo scriptName.js --eval \"var dbName='your_database_name'\"");
+  quit();
+}
+
+// Connect to the specified database
+const db = new Mongo().getDB(dbName);
+
+// Get the count of documents in the 'school' collection
+const count = db.school.count();
+
+// Display the number of documents
+print(`Number of documents in 'school' collection: ${count}`);

@@ -1,0 +1,5 @@
+// Connect to the specified database
+const db = new Mongo().getDB(dbName);
+
+// Find all documents in the 'school' collection
+const cursor = db.school.find();
