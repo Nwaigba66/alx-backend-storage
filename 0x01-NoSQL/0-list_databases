@@ -1,3 +1,8 @@
-// my comment
-
- /etc/apt/sources.list.d
+// Get the list of databases
+  const adminDb = client.db('admin');
+  adminDb.admin().listDatabases((err, result) => {
+    if (err) {
+      console.error('Error listing databases:', err);
+      client.close();
+      return;
+    }
