@@ -1,0 +1,27 @@
+// my comment
+// Example usage: mongo scriptName.js --eval "var dbName='your_database_name'"
+// Replace 'your_database_name' with the actual name of your database
+
+// Ensure dbName is provided as an option
+if (!dbName) {
+  print("Error: Database name not provided. Usage: mongo scriptName.js --eval \"var dbName='your_database_name'\"");
+  quit();
+}
+
+// Connect to the specified database
+const db = new Mongo().getDB(dbName);
+
+// Insert a document into the 'school' collection
+const result = db.school.insertOne({
+  name: "Holberton school"
+});
+
+// Check if the insertion was successful
+if (result && result.insertedId) {
+  print(`Document inserted successfully with _id: ${result.insertedId}`);
+} else {
+  print("Error inserting document.");
+}
+
+// Close the connection
+quit();
