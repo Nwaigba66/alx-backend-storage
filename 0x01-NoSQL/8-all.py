@@ -17,5 +17,3 @@ def list_all(mongo_collection):
 
 # Import necessary modules and connect to the MongoDB server
 from pymongo import MongoClient
-
-# Replace 'your_connection_string' with the actual connection string
