@@ -1,2 +1,2 @@
-// Display the number of documents
-print(`Number of documents in 'school' collection: ${count}`);
+// Display the number of documents in the collection school
+db.school.count()
