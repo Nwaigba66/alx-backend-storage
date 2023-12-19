@@ -1,2 +1,2 @@
 //A script that gets the list of databases
-showdbs
+show dbs;
