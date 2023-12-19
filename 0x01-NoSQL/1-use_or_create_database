@@ -1,9 +1,2 @@
-// my comment
-onst url = 'mongodb://localhost:27017';
-
-// Database name
-const dbName = 'my_db';
-
-// Use or create the 'my_db' database
-  const db = client.db(dbName);
-
+//A script that creates or uses the database my_db
+use my_db
