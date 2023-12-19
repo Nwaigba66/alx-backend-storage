@@ -4,7 +4,3 @@
         {"$sort": {"count": -1}},
         {"$limit": 10}
     ])
-
-    print("Top 10 IPs:")
-    for ip in top_ips:
-        print(f"\t{ip['_id']}: {ip['count']} times")
