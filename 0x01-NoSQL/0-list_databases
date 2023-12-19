@@ -1,8 +1,2 @@
-// Get the list of databases
-  const adminDb = client.db('admin');
-  adminDb.admin().listDatabases((err, result) => {
-    if (err) {
-      console.error('Error listing databases:', err);
-      client.close();
-      return;
-    }
+//A script that gets the list of databases
+showdbs
