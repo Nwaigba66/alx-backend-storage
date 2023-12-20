@@ -20,6 +20,8 @@ class Cache:
         """
         self._redis.flushdb()
 
+
+    
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Generate a random key using uuid
         """
@@ -56,8 +58,8 @@ class Cache:
         """Takes a single method Callable and returns a Callable
         """
         @wraps(method)
-        def wrapper(self, *args, **kwds):
+        def wrapper(self, *args, **kwargs):
                 key = method.__qualname__
                 self._redis.incr(key)
-                return Callable(self, *args, **kwds)
+                return Callable(self, *args, **kwargs)
         return wrapper
