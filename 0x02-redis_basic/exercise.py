@@ -34,7 +34,13 @@ def call_history(method: Callable) -> Callable:
 
 def count_calls(method: Callable) -> Callable:
     """Takes a single method Callable and returns a Callable
+    Arguments:
+        method (Callable): The function to be decorated.
+
+    Returns:
+        Callable: The decorated function.
     """
+    
     @wraps(method)
     def wrapper(self, *args, **kwargs):
         key = method.__qualname__
