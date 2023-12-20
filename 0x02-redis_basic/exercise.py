@@ -4,7 +4,7 @@
 
 import redis
 import uuid
-from typing import Union, Callable
+from typing import Union, Callable, Any, AnyStr
 from functools import wraps
 
 types = [str, bytes, int, float]
