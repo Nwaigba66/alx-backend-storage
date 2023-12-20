@@ -15,14 +15,15 @@ def replay(method) -> None:
     """
     self = method.__self__
     key = method.__qualname__
-    input_key = f"{key}:inputs"
-    output_key = f"{key}:outputs"
-    input_history = self._redis.lrange(input_key, 0, -1)
-    output_history = self._redis.lrange(output_key, 0, -1)
+    in_key = f"{key}:inputs"
+    out_key = f"{key}:outputs"
+    in_list = self._redis.lrange(in_key, 0, -1)
+    out_list = self._redis.lrange(out_key, 0, -1)
     print(f'Cache.store was called {int(self._redis.get(key))} times:')
-    for this_key, value in zip(*(input_history, output_history)):
+    for this_key, value in zip(*(in_list, out_list)):
         print("Cache.store(*{}) -> {}".format(
-            this_key.decode("utf-8"), value.decode('utf-8')))
+            this_key.decode("utf-8"),
+            value.decode('utf-8')))
 
 
 def call_history(method: Callable) -> Callable:
