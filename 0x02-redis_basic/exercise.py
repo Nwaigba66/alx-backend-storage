@@ -9,6 +9,21 @@ from functools import wraps
 
 types = [str, bytes, int, float]
 
+def replay(method) -> None:
+    """replay function to display the history of calls
+    """
+    self = method.__self__
+    key = method.__qualname__
+    input_key = f"{key}:inputs"
+    output_key = f"{key}:outputs"
+    input_history = self._redis.lrange(input_key, 0, -1)
+    output_history = self._redis.lrange(output_key, 0, -1)
+    print(f'Cache.store was called {int(self._redis.get(key))} times:')
+    for this_key, value in zip(*(input_history, output_history)):
+        print("Cache.store(*{}) -> {}".format(
+            this_key.decode("utf-8"),
+            value.decode('utf-8')))
+        
 def call_history(method: Callable) -> Callable:
     """A decorator to store the history of inputs and outputs
     """
