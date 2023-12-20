@@ -5,6 +5,7 @@
 import redis
 import uuid
 from typing import Union, Callable
+from functools import wraps
 
 types = [str, bytes, int, float]
 
@@ -49,4 +50,14 @@ class Cache:
     def get_int(self, Callable) -> Union[int, None]:
         """Returns a Callable to convert to integer
         """
-        return int       
+        return int
+
+    def count_calls(method: Callable) -> Callable:
+        """Takes a single method Callable and returns a Callable
+        """
+        @wraps(method)
+        def wrapper(self, *args, **kwds):
+                key = method.__qualname__
+                self._redis.incr(key)
+                return Callable(self, *args, **kwds)
+        return wrapper
