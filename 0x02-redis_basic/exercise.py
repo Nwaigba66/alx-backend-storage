@@ -4,7 +4,7 @@
 
 import redis
 import uuid
-from typing import Union
+from typing import Union, Callable
 
 types = [str, bytes, int, float]
 
@@ -30,3 +30,23 @@ class Cache:
         """Return the key
         """
         return key
+
+    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, None]:
+        """Get the data in a given key location
+        """
+        data = self._redis.get(key)
+        if data is not None:
+            if fn:
+                return fn(data)
+            return data
+        return None
+
+    def get_str(self, Callable) -> Union[str, None]:
+        """Returns a Callable to convert to string
+        """
+        return lambda d: d.decode("utf-8")
+
+    def get_int(self, Callable) -> Union[int, None]:
+        """Returns a Callable to convert to integer
+        """
+        return int       
