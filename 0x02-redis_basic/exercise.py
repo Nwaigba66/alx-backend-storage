@@ -10,6 +10,33 @@ from functools import wraps
 types = [str, bytes, int, float]
 
 
+def call_history(method: Callable) -> Callable:
+    """A decorator to store the history of inputs and outputs for a particular function
+    """
+    @wraps(method)
+    def wrapper(self, *args):
+        """Initialize redis client
+        """
+        self._redis = redis.Redis()
+
+        """Create keys for input and output list
+        """
+        key = method.__qualname__
+        input_key = f"{method.__qualname__}:inputs"
+        output_key = f"{method.__qualname__}:outputs"
+
+        """Execute the wrapped function to retrieve the output
+        """
+        output = method(self, *args)
+
+        self._redis.rpush(input_key, str(args))
+        """Store the output using RPUSH in the "...:outputs" list
+        """
+        self._redis.rpush(output_key, str(args))
+        return output
+    return wrapper    
+
+
 def count_calls(method: Callable) -> Callable:
         """Takes a single method Callable and returns a Callable
         """
@@ -31,7 +58,8 @@ class Cache:
         """
         self._redis.flushdb()
 
-
+    
+    @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Generate a random key using uuid
