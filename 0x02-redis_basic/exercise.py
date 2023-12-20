@@ -10,6 +10,17 @@ from functools import wraps
 types = [str, bytes, int, float]
 
 
+def count_calls(method: Callable) -> Callable:
+        """Takes a single method Callable and returns a Callable
+        """
+        @wraps(method)
+        def wrapper(self, *args, **kwargs):
+                key = method.__qualname__
+                self._redis.incr(key)
+                return method(self, *args, **kwargs)
+        return wrapper
+
+
 class Cache:
     def __init__(self):
         """Initialize redis client
@@ -21,7 +32,7 @@ class Cache:
         self._redis.flushdb()
 
 
-    
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Generate a random key using uuid
         """
@@ -53,13 +64,3 @@ class Cache:
         """Returns a Callable to convert to integer
         """
         return int
-
-    def count_calls(method: Callable) -> Callable:
-        """Takes a single method Callable and returns a Callable
-        """
-        @wraps(method)
-        def wrapper(self, *args, **kwargs):
-                key = method.__qualname__
-                self._redis.incr(key)
-                return Callable(self, *args, **kwargs)
-        return wrapper
