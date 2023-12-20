@@ -11,20 +11,19 @@ types = [str, bytes, int, float]
 
 
 def call_history(method: Callable) -> Callable:
-    """A decorator to store the history of inputs and outputs for a particular function
+    """A decorator to store the history of inputs and outputs
     """
     @wraps(method)
     def wrapper(self, *args):
         """Create keys for input and output list
         """
         key = method.__qualname__
-        input_key = f"{method.__qualname__}:inputs"
-        output_key = f"{method.__qualname__}:outputs"
+        input_key = f"{key}:inputs"
+        output_key = f"{key}:outputs"
 
         """Execute the wrapped function to retrieve the output
         """
         output = method(self, *args)
-
         self._redis.rpush(input_key, str(args))
         """Store the output using RPUSH in the "...:outputs" list
         """
@@ -68,7 +67,7 @@ class Cache:
         """
         return key
 
-    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, None]:
+    def get(self, key: str, fn: Callable = None) -> Callable:
         """Get the data in a given key location
         """
         data = self._redis.get(key)
