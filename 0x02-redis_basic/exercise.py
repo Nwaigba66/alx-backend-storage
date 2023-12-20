@@ -9,7 +9,6 @@ from functools import wraps
 
 types = [str, bytes, int, float]
 
-
 def call_history(method: Callable) -> Callable:
     """A decorator to store the history of inputs and outputs
     """
@@ -20,14 +19,13 @@ def call_history(method: Callable) -> Callable:
         key = method.__qualname__
         input_key = f"{key}:inputs"
         output_key = f"{key}:outputs"
-
         """Execute the wrapped function to retrieve the output
         """
         output = method(self, *args)
         self._redis.rpush(input_key, str(args))
         """Store the output using RPUSH in the "...:outputs" list
         """
-        self._redis.rpush(output_key, str(args))
+        self._redis.rpush(output_key, str(output))
         return output
     return wrapper
 
