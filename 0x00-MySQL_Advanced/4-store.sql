@@ -8,7 +8,3 @@ BEGIN
     SET quantity = quantity - NEW.quantity
     WHERE item_id = NEW.item_id;
 END;
-//
-
-DELIMITER ;
-
